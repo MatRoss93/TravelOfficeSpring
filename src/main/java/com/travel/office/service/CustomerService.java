@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class CustomerService implements ICustomerService {
@@ -17,5 +18,10 @@ public class CustomerService implements ICustomerService {
     public List<Customer> findAll() {
         List<Customer> customers = (List<Customer>) customerRepository.findAll();
         return customers;
+    }
+
+    @Override
+    public Optional<Customer> findById(long id) {
+        return customerRepository.findById(id);
     }
 }

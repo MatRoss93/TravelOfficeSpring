@@ -2,10 +2,7 @@ package com.travel.office.model;
 
 import lombok.Data;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Data
 @Entity
@@ -16,7 +13,11 @@ public class Customer {
     private long id;
     private String name;
     private String surname;
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "address_id", referencedColumnName = "id")
     private Address address;
+    @OneToMany(cascade = CascadeType.REFRESH)
+    @JoinColumn(name = "trip_id", referencedColumnName = "id")
     private Trip trip;
 
     public Customer(long id, String name, String surname, Address address) {
