@@ -16,10 +16,10 @@ public class Customer {
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "address_id", referencedColumnName = "id")
     private Address address;
-    @OneToMany(cascade = CascadeType.REFRESH)
+    @OneToOne(cascade = CascadeType.REFRESH)
     @JoinColumn(name = "trip_id", referencedColumnName = "id")
     private Trip trip;
-
+    public Customer() {}
     public Customer(long id, String name, String surname, Address address) {
         this.id = id;
         this.name = name;

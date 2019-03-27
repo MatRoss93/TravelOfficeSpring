@@ -6,9 +6,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
-public class TripService implements ITripService{
+public class TripService implements ITripService {
 
     @Autowired
     private TripRepository tripRepository;
@@ -17,5 +18,14 @@ public class TripService implements ITripService{
     public List<Trip> findAll() {
         List<Trip> trips = (List<Trip>) tripRepository.findAll();
         return trips;
+    }
+
+    @Override
+    public Optional<Trip> findById(long id) {
+        return tripRepository.findById(id);
+    }
+
+    public void save(Trip trip) {
+        tripRepository.save(trip);
     }
 }

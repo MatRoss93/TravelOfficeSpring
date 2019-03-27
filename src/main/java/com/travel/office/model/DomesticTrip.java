@@ -2,18 +2,24 @@ package com.travel.office.model;
 
 import lombok.Data;
 
+import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+
 import java.time.LocalDate;
 
+@Entity
+@Data
+@DiscriminatorValue("2")
 public class DomesticTrip extends Trip {
 
-    private double ownArrivalDiscount;
+    private Double ownArrivalDiscount;
 
-    public DomesticTrip(String destination, LocalDate tripStartLocalDate, LocalDate tripEndLocalDate, double price, double ownArrivalDiscount) {
+    public DomesticTrip() {
+        this.ownArrivalDiscount = 0.0;
+    }
+
+    public DomesticTrip(String destination, LocalDate tripStartLocalDate, LocalDate tripEndLocalDate, double price) {
         super(destination, tripStartLocalDate, tripEndLocalDate, price);
-        this.ownArrivalDiscount = ownArrivalDiscount;
+        this.ownArrivalDiscount = 0.0;
     }
 }
