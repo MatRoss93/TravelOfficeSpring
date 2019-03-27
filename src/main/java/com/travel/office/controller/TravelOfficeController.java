@@ -1,6 +1,7 @@
 package com.travel.office.controller;
 
 
+import com.travel.office.model.AboardTrip;
 import com.travel.office.model.Customer;
 import com.travel.office.model.DomesticTrip;
 import com.travel.office.model.Trip;
@@ -43,9 +44,16 @@ public class TravelOfficeController {
     }
 
     @GetMapping("/addtrip")
-    public void addTrip(@RequestParam String dest, @RequestParam String start, @RequestParam String end, @RequestParam double price) {
-        Trip trip = new DomesticTrip(dest,LocalDate.parse(start),LocalDate.parse(end),price);
-        tripService.save(trip);
+    public void addTrip(@RequestParam String type, @RequestParam String dest, @RequestParam String start, @RequestParam String end, @RequestParam double price) {
+        if(type.equals("2")) {
+            Trip trip = new DomesticTrip(dest, LocalDate.parse(start), LocalDate.parse(end), price);
+            tripService.save(trip);
+        }
+        else if(type.equals("1")) {
+            Trip trip = new AboardTrip(dest, LocalDate.parse(start), LocalDate.parse(end), price);
+            tripService.save(trip);
+        } else
+            System.out.println("Błąd");
     }
 
 }
