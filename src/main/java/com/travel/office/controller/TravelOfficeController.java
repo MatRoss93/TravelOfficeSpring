@@ -8,12 +8,10 @@ import com.travel.office.model.Trip;
 import com.travel.office.service.ICustomerService;
 import com.travel.office.service.ITripService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 public class TravelOfficeController {
@@ -27,6 +25,8 @@ public class TravelOfficeController {
     @RequestMapping("/trips")
     public List<Trip> availableTrips() {
         List<Trip> trips = tripService.findAll();
+        if(trips.equals(null))
+            System.out.println("Brak wycieczek w bazie");
         return trips;
     }
 
@@ -36,24 +36,85 @@ public class TravelOfficeController {
         return customers;
     }
 
-    @RequestMapping("/trips/{id}")
-    public Optional<Trip> findTripById(@RequestParam(name="id" , defaultValue = "0") long id) {
-        Optional<Trip> trip = null;
-        trip = tripService.findById(id);
+    @GetMapping("/trips/{id}")
+    public Trip findTripById(@PathVariable("id") String id) {
+        Trip trip = null;
+        try {
+            trip = tripService.findById(id);
+        } catch(IllegalArgumentException e) {
+            System.out.println(e.getCause());
+        }
         return trip;
     }
 
-    @GetMapping("/addtrip")
-    public void addTrip(@RequestParam String type, @RequestParam String dest, @RequestParam String start, @RequestParam String end, @RequestParam double price) {
+    @GetMapping("/customers/{id}")
+    public Customer findCustomerById(@PathVariable("id") String id) {
+        Customer customer = null;
+        try {
+            customer = customerService.findById(id);
+        } catch(IllegalArgumentException e) {
+            System.out.println(e.getCause());
+        }
+        return customer;
+    }
+
+    @GetMapping("/trips/addtrip")
+    public String addTrip(@RequestParam String type, @RequestParam String dest, @RequestParam String start, @RequestParam String end, @RequestParam double price) {
         if(type.equals("2")) {
             Trip trip = new DomesticTrip(dest, LocalDate.parse(start), LocalDate.parse(end), price);
             tripService.save(trip);
+            return trip.toString();
         }
         else if(type.equals("1")) {
             Trip trip = new AboardTrip(dest, LocalDate.parse(start), LocalDate.parse(end), price);
             tripService.save(trip);
+            return trip.toString();
         } else
-            System.out.println("Błąd");
+            return "Error";
     }
+
+    @PostMapping("/customers/addcustomer")
+    /*
+    public String addCustomer(@RequestParam String name, @RequestParam String lName, @RequestParam String city,
+                              @RequestParam String street, @RequestParam String zip) {
+        ,
+
+
+    }
+    */
+    public String addCustomer(@RequestBody Customer customer) {
+        customerService.save(customer);
+        return "";
+    }
+    @GetMapping("/trips/edit/{id}/{mod}")
+    public String editTrip(@PathVariable("id") String id, @PathVariable("mod") Double mod) {
+        Trip trip = null;
+        if(tripService.findById(id) instanceof AboardTrip) {
+            trip = (tripService.findById(id));
+            ((AboardTrip) trip).setInsurance(mod);
+            tripService.save(trip);
+            return "";
+        } else {
+            trip = tripService.findById(id);
+            ((DomesticTrip) trip).setOwnArrivalDiscount(mod);
+            tripService.save(trip);
+            return "";
+        }
+
+    }
+
+    @GetMapping("/trips/delete/{id}")
+    public String deleteTrip(@PathVariable("id") String id) {
+        Trip trip = null;
+        try {
+            trip = tripService.findById(id);
+            tripService.delete(trip);
+            return "Trip deleted";
+        } catch(IllegalArgumentException e) {
+            return e.getCause().toString();
+        }
+    }
+
+
 
 }

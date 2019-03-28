@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class CustomerService implements ICustomerService {
@@ -20,8 +19,18 @@ public class CustomerService implements ICustomerService {
         return customers;
     }
 
-    @Override
-    public Optional<Customer> findById(long id) {
-        return customerRepository.findById(id);
+    public Customer findById(String id) {
+        return customerRepository.findById(Long.valueOf(id)).orElseThrow(()-> new IllegalArgumentException("Invalid customer id: " + id));
     }
+
+    @Override
+    public void save(Customer customer) {
+        customerRepository.save(customer);
+    }
+
+    @Override
+    public void delete(Customer customer) {
+        customerRepository.delete(customer);
+    }
+
 }

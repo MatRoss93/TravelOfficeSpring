@@ -4,9 +4,9 @@ import com.travel.office.model.Trip;
 import com.travel.office.repository.TripRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.ui.Model;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class TripService implements ITripService {
@@ -21,11 +21,19 @@ public class TripService implements ITripService {
     }
 
     @Override
-    public Optional<Trip> findById(long id) {
-        return tripRepository.findById(id);
+    public Trip findById(String id) {
+
+        return tripRepository.findById(Long.valueOf(id)).orElseThrow(()-> new IllegalArgumentException("Invalid trip id:" + id));
     }
 
     public void save(Trip trip) {
         tripRepository.save(trip);
+
     }
+
+    @Override
+    public void delete(Trip trip) {
+        tripRepository.delete(trip);
+    }
+
 }
