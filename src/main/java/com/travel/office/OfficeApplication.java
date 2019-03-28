@@ -28,18 +28,6 @@ public class OfficeApplication {
         SpringApplication.run(OfficeApplication.class, args);
     }
 
-    @GetMapping("/")
-    Trip getTripFromGET(@RequestParam String dest, @RequestParam String start, @RequestParam String end, @RequestParam double price) {
-        Trip trip = new DomesticTrip(dest, LocalDate.parse(start), LocalDate.parse(end), price);
-        return trip;
-    }
-
-    @GetMapping("/c")
-    Customer getCustomerFromGET(@RequestParam long id, @RequestParam String name, @RequestParam String lname) {
-        Customer customer = new Customer(id,name,lname, new Address("a","b","c"));
-        return customer;
-    }
-
     @Bean
     public Docket api() {
         return new Docket(DocumentationType.SWAGGER_2)

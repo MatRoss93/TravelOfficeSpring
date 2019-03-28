@@ -20,8 +20,7 @@ public class Customer {
     @JoinColumn(name = "trip_id", referencedColumnName = "id")
     private Trip trip;
     public Customer() {}
-    public Customer(long id, String name, String surname, Address address) {
-        this.id = id;
+    public Customer(String name, String surname, Address address) {
         this.name = name;
         this.surname = surname;
         this.address = address;

@@ -19,8 +19,8 @@ public class CustomerService implements ICustomerService {
         return customers;
     }
 
-    public Customer findById(String id) {
-        return customerRepository.findById(Long.valueOf(id)).orElseThrow(()-> new IllegalArgumentException("Invalid customer id: " + id));
+    public Customer findById(Long id) {
+        return customerRepository.findById((id)).orElseThrow(()-> new IllegalArgumentException("Invalid customer id: " + id));
     }
 
     @Override

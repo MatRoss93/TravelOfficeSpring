@@ -21,9 +21,9 @@ public class TripService implements ITripService {
     }
 
     @Override
-    public Trip findById(String id) {
+    public Trip findById(Long id) {
 
-        return tripRepository.findById(Long.valueOf(id)).orElseThrow(()-> new IllegalArgumentException("Invalid trip id:" + id));
+        return tripRepository.findById(id).orElseThrow(()-> new IllegalArgumentException("Invalid trip id:" + id));
     }
 
     public void save(Trip trip) {

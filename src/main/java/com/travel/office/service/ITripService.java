@@ -7,7 +7,7 @@ import java.util.List;
 public interface ITripService {
 
     List<Trip> findAll();
-    Trip findById(String id);
+    Trip findById(Long id);
     void save(Trip trip);
     void delete (Trip trip);
 }
